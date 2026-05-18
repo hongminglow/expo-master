@@ -36,7 +36,7 @@ export default function HomeScreen() {
           <Text style={styles.statLabel}>Expo demos</Text>
         </Card>
         <Card style={styles.statCard}>
-          <Text style={styles.statValue}>SDK 55</Text>
+          <Text style={styles.statValue}>SDK 54</Text>
           <Text style={styles.statLabel}>Runtime target</Text>
         </Card>
       </View>

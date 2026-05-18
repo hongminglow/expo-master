@@ -1,6 +1,6 @@
 # Enterprise Expo Mobile Template
 
-An Expo SDK 55 TypeScript starter for enterprise mobile apps. It uses Expo Router, feature-first source folders, a protected app shell, AsyncStorage-backed remember-me, SecureStore-backed session persistence, and native capability showcase screens.
+An Expo SDK 54 TypeScript starter for enterprise mobile apps. It uses Expo Router, feature-first source folders, a protected app shell, AsyncStorage-backed remember-me, SecureStore-backed session persistence, and native capability showcase screens.
 
 ## Demo Account
 
@@ -38,7 +38,22 @@ bun run typecheck
 bun run test
 ```
 
-This template is optimized for Expo development builds because several native demos are limited in Expo Go or web. Web remains useful for shell-level validation, login, and route checks.
+If Bun on Windows cannot spawn local tools, use the direct Node entrypoint:
+
+```bash
+node ./node_modules/expo/bin/cli start
+```
+
+## Android Phone With Expo Go
+
+This project targets SDK 54 so it can open in the Play Store version of Expo Go.
+
+1. Connect your Android phone and computer to the same Wi-Fi.
+2. Run `bun run start`.
+3. Scan the QR code with Expo Go.
+4. If LAN cannot connect, press `s` in the Expo terminal to switch connection mode, then choose Tunnel.
+
+Some native modules still behave differently in Expo Go than in a production build, but the project is now aligned to the SDK version supported by Play Store Expo Go.
 
 ## Verification
 
