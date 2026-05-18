@@ -2,7 +2,7 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
 
-const DEMO_SECRET_KEY = 'enterprise.demoSecret.v1';
+const DEMO_SECRET_KEY = 'pulse.demoSecret.v1';
 const webSecureFallback = new Map<string, string>();
 
 export type BiometricReadiness = {

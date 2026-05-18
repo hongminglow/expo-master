@@ -1,7 +1,7 @@
 import { featureModules, getFeatureModule } from '../feature-registry';
 
 describe('feature registry', () => {
-  it('contains the required enterprise Expo showcase modules', () => {
+  it('contains the required capability modules', () => {
     expect(featureModules.map((feature) => feature.id)).toEqual([
       'qr',
       'notifications',

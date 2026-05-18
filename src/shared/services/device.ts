@@ -28,7 +28,7 @@ export async function getDeviceSnapshot(): Promise<DeviceSnapshot> {
       { label: 'OS', value: `${displayValue(Device.osName)} ${displayValue(Device.osVersion)}` },
       { label: 'App ID', value: displayValue(Application.applicationId) },
       { label: 'App version', value: displayValue(Application.nativeApplicationVersion) },
-      { label: 'Expo SDK', value: displayValue(Constants.expoConfig?.sdkVersion) },
+      { label: 'Runtime SDK', value: displayValue(Constants.expoConfig?.sdkVersion) },
       { label: 'Network type', value: displayValue(network.type) },
       { label: 'Internet reachable', value: displayValue(network.isInternetReachable) },
     ],

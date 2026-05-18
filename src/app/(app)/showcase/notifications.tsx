@@ -48,7 +48,7 @@ export default function NotificationsScreen() {
         <Text style={styles.title}>Notification readiness</Text>
         <Text style={styles.copy}>
           Local notifications work from the app. Push token registration is surfaced separately
-          because production push delivery needs a physical device and EAS project id.
+          because production push delivery needs a physical device and project id.
         </Text>
         <View style={styles.actions}>
           <AppButton title="Check readiness" onPress={checkReadiness} loading={loading} />
@@ -60,7 +60,7 @@ export default function NotificationsScreen() {
         <Card style={styles.card}>
           <InfoRow label="Permission status" value={readiness.status} />
           <InfoRow label="Push token ready" value={readiness.canUsePushToken ? 'Yes' : 'No'} />
-          <InfoRow label="Expo push token" value={readiness.expoPushToken ?? 'Not available'} />
+          <InfoRow label="Push token" value={readiness.expoPushToken ?? 'Not available'} />
           <InfoRow label="Note" value={readiness.note} />
         </Card>
       ) : null}

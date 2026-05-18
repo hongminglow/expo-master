@@ -14,7 +14,7 @@ import { Card } from '@/shared/ui/card';
 import { InfoRow } from '@/shared/ui/info-row';
 import { Screen } from '@/shared/ui/screen';
 
-const docsUrl = 'https://docs.expo.dev';
+const helpUrl = 'https://reactnative.dev';
 
 export default function DeviceSystemScreen() {
   const [snapshot, setSnapshot] = useState<DeviceSnapshot | null>(null);
@@ -38,7 +38,7 @@ export default function DeviceSystemScreen() {
       <Card style={styles.card}>
         <Text style={styles.title}>Device and system utilities</Text>
         <Text style={styles.copy}>
-          Inspect app/runtime metadata and trigger small system integrations used across enterprise apps.
+          Inspect app/runtime metadata and trigger small system integrations used in daily mobile workflows.
         </Text>
         <View style={styles.actions}>
           <AppButton
@@ -55,14 +55,14 @@ export default function DeviceSystemScreen() {
             onPress={() => run('Haptic feedback sent.', triggerSuccessHaptic)}
           />
           <AppButton
-            title="Open docs"
+            title="Open help"
             variant="secondary"
-            onPress={() => run('Opened Expo docs.', () => openExternalUrl(docsUrl))}
+            onPress={() => run('Opened help center.', () => openExternalUrl(helpUrl))}
           />
           <AppButton
             title="In-app browser"
             variant="secondary"
-            onPress={() => run('Opened browser session.', () => openInAppBrowser(docsUrl))}
+            onPress={() => run('Opened browser session.', () => openInAppBrowser(helpUrl))}
           />
         </View>
       </Card>

@@ -19,9 +19,7 @@ export default function HomeScreen() {
         <View style={styles.headerText}>
           <Text style={styles.eyebrow}>Workspace</Text>
           <Text style={styles.title}>Welcome, {user?.name ?? 'operator'}</Text>
-          <Text style={styles.subtitle}>
-            Validate common Expo modules from one enterprise-ready shell.
-          </Text>
+          <Text style={styles.subtitle}>Review device capabilities from one workspace.</Text>
         </View>
         <Link href="/settings" asChild>
           <Pressable accessibilityLabel="Open settings" style={styles.settingsButton}>
@@ -33,16 +31,16 @@ export default function HomeScreen() {
       <View style={styles.statsGrid}>
         <Card style={styles.statCard}>
           <Text style={styles.statValue}>{featureModules.length}</Text>
-          <Text style={styles.statLabel}>Expo demos</Text>
+          <Text style={styles.statLabel}>Tools</Text>
         </Card>
         <Card style={styles.statCard}>
-          <Text style={styles.statValue}>SDK 54</Text>
-          <Text style={styles.statLabel}>Runtime target</Text>
+          <Text style={styles.statValue}>Mobile</Text>
+          <Text style={styles.statLabel}>Channel</Text>
         </Card>
       </View>
 
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Native capability showcase</Text>
+        <Text style={styles.sectionTitle}>Capability center</Text>
         <Text style={styles.sectionCopy}>Each module includes permission and unsupported-state handling.</Text>
       </View>
 

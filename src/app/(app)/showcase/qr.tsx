@@ -51,7 +51,7 @@ export default function QrScannerScreen() {
       <Screen>
         <PermissionState
           title="Camera permission required"
-          message="The QR demo needs camera access to scan enterprise badge, kiosk, or device QR codes."
+          message="The QR scanner needs camera access to scan badge, kiosk, or device QR codes."
           actionLabel="Allow camera"
           onAction={requestPermission}
         />

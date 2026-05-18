@@ -27,7 +27,7 @@ export default function AppLayout() {
         headerTintColor: palette.ink,
         contentStyle: { backgroundColor: palette.cloud },
       }}>
-      <Stack.Screen name="home" options={{ title: 'Enterprise Expo' }} />
+      <Stack.Screen name="home" options={{ title: 'Dashboard' }} />
       <Stack.Screen name="settings" options={{ title: 'Settings' }} />
       <Stack.Screen name="showcase/qr" options={{ title: 'QR Scanner' }} />
       <Stack.Screen name="showcase/notifications" options={{ title: 'Notifications' }} />

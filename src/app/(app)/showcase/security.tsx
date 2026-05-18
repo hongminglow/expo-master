@@ -42,8 +42,8 @@ export default function SecurityScreen() {
       <Card style={styles.card}>
         <Text style={styles.title}>Biometrics and secure storage</Text>
         <Text style={styles.copy}>
-          Enterprise apps commonly gate sensitive flows with biometrics and keep secrets out of
-          AsyncStorage.
+          Mobile apps commonly gate sensitive flows with biometrics and keep secrets out of local
+          preference storage.
         </Text>
         {readiness ? (
           <View style={styles.details}>

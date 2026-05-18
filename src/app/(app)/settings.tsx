@@ -2,46 +2,53 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useAuth } from '@/features/auth/auth-provider';
-import { DEMO_ACCOUNT } from '@/features/auth/auth-service';
-import { palette, spacing, typography } from '@/shared/theme/tokens';
+import { palette, radius, spacing, typography } from '@/shared/theme/tokens';
 import { AppButton } from '@/shared/ui/app-button';
 import { Card } from '@/shared/ui/card';
 import { Screen } from '@/shared/ui/screen';
 
 export default function SettingsScreen() {
-  const { logout, rememberedLogin, user } = useAuth();
+  const { logout, user } = useAuth();
 
   return (
     <Screen>
       <Card style={styles.card}>
-        <Text style={styles.title}>Signed in profile</Text>
-        <View style={styles.row}>
-          <Text style={styles.label}>Name</Text>
-          <Text style={styles.value}>{user?.name}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Email</Text>
-          <Text style={styles.value}>{user?.email}</Text>
+        <View style={styles.profileHeader}>
+          <View style={styles.avatar}>
+            <Text style={styles.avatarText}>DA</Text>
+          </View>
+          <View style={styles.profileText}>
+            <Text style={styles.title}>{user?.name ?? 'Demo Admin'}</Text>
+            <Text style={styles.copy}>{user?.email ?? 'admin@example.com'}</Text>
+          </View>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Role</Text>
-          <Text style={styles.value}>{user?.role}</Text>
+          <Text style={styles.value}>{user?.role ?? 'Administrator'}</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.label}>Department</Text>
+          <Text style={styles.value}>Operations</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.label}>Location</Text>
+          <Text style={styles.value}>Kuala Lumpur</Text>
         </View>
       </Card>
 
       <Card style={styles.card}>
-        <Text style={styles.title}>Remember me</Text>
-        <Text style={styles.copy}>
-          AsyncStorage keeps only the remembered email flag and email address. SecureStore keeps the
-          demo session only when remember-me is enabled.
-        </Text>
+        <Text style={styles.title}>Account details</Text>
         <View style={styles.row}>
-          <Text style={styles.label}>Remembered email</Text>
-          <Text style={styles.value}>{rememberedLogin.email || 'Not saved'}</Text>
+          <Text style={styles.label}>Employee ID</Text>
+          <Text style={styles.value}>EMP-1042</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.label}>Demo account</Text>
-          <Text style={styles.value}>{DEMO_ACCOUNT.email}</Text>
+          <Text style={styles.label}>Access level</Text>
+          <Text style={styles.value}>Workspace manager</Text>
+        </View>
+        <View style={styles.row}>
+          <Text style={styles.label}>Last access</Text>
+          <Text style={styles.value}>Today</Text>
         </View>
       </Card>
 
@@ -53,6 +60,28 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   card: {
     gap: spacing.md,
+  },
+  profileHeader: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: spacing.md,
+  },
+  avatar: {
+    alignItems: 'center',
+    backgroundColor: palette.primary,
+    borderRadius: radius.lg,
+    height: 56,
+    justifyContent: 'center',
+    width: 56,
+  },
+  avatarText: {
+    color: palette.surface,
+    fontSize: typography.subheading,
+    fontWeight: '900',
+  },
+  profileText: {
+    flex: 1,
+    gap: 2,
   },
   title: {
     color: palette.ink,

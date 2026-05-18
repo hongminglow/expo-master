@@ -1,3 +1,4 @@
+import Feather from '@expo/vector-icons/Feather';
 import React, { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
@@ -65,7 +66,7 @@ export function LoginForm({ initialEmail, initialRememberMe, onSubmit }: LoginFo
       });
     } catch (error) {
       setErrors({
-        form: error instanceof Error ? error.message : 'Unable to sign in.',
+        form: error instanceof Error ? error.message : 'Unable to continue.',
       });
     } finally {
       setIsSubmitting(false);
@@ -74,12 +75,6 @@ export function LoginForm({ initialEmail, initialRememberMe, onSubmit }: LoginFo
 
   return (
     <Card style={styles.card}>
-      <View style={styles.header}>
-        <Text style={styles.eyebrow}>Enterprise Expo</Text>
-        <Text style={styles.title}>Sign in</Text>
-        <Text style={styles.subtitle}>Use admin@example.com and password password.</Text>
-      </View>
-
       <TextField
         label="Email"
         value={email}
@@ -111,9 +106,11 @@ export function LoginForm({ initialEmail, initialRememberMe, onSubmit }: LoginFo
             hitSlop={8}
             onPress={() => setIsPasswordVisible((current) => !current)}
             style={({ pressed }) => [styles.passwordToggle, pressed && styles.pressed]}>
-            <Text style={styles.passwordToggleText}>
-              {isPasswordVisible ? 'Hide' : 'Show'}
-            </Text>
+            <Feather
+              name={isPasswordVisible ? 'eye-off' : 'eye'}
+              color={palette.primary}
+              size={20}
+            />
           </Pressable>
         }
       />
@@ -132,7 +129,7 @@ export function LoginForm({ initialEmail, initialRememberMe, onSubmit }: LoginFo
 
       {errors.form ? <Text style={styles.formError}>{errors.form}</Text> : null}
 
-      <AppButton title="Sign in" loading={isSubmitting} onPress={handleSubmit} />
+      <AppButton title="Continue" loading={isSubmitting} onPress={handleSubmit} />
     </Card>
   );
 }
@@ -140,26 +137,6 @@ export function LoginForm({ initialEmail, initialRememberMe, onSubmit }: LoginFo
 const styles = StyleSheet.create({
   card: {
     gap: spacing.lg,
-  },
-  header: {
-    gap: spacing.xs,
-  },
-  eyebrow: {
-    color: palette.primary,
-    fontSize: typography.small,
-    fontWeight: '800',
-    letterSpacing: 0,
-    textTransform: 'uppercase',
-  },
-  title: {
-    color: palette.ink,
-    fontSize: typography.title,
-    fontWeight: '800',
-  },
-  subtitle: {
-    color: palette.slate,
-    fontSize: typography.body,
-    lineHeight: 22,
   },
   rememberRow: {
     alignItems: 'center',
@@ -192,15 +169,11 @@ const styles = StyleSheet.create({
     fontSize: typography.small,
   },
   passwordToggle: {
-    minHeight: 36,
-    minWidth: 52,
     alignItems: 'center',
+    borderRadius: 18,
+    height: 36,
     justifyContent: 'center',
-  },
-  passwordToggleText: {
-    color: palette.primary,
-    fontSize: typography.small,
-    fontWeight: '800',
+    width: 36,
   },
   pressed: {
     opacity: 0.7,

@@ -51,7 +51,7 @@ export async function getNotificationReadiness(): Promise<NotificationReadiness>
     return {
       status: 'unsupported',
       canUsePushToken: false,
-      note: 'Expo notifications require a native runtime on iOS or Android.',
+      note: 'Notifications require a native runtime on iOS or Android.',
     };
   }
 
@@ -81,7 +81,7 @@ export async function getNotificationReadiness(): Promise<NotificationReadiness>
     return {
       status: permission.status,
       canUsePushToken: false,
-      note: 'Android Expo Go supports local notifications only on SDK 54. Push tokens require a development build.',
+      note: 'This runtime supports local notifications only. Push tokens require a custom development build.',
     };
   }
 
@@ -108,7 +108,7 @@ export async function getNotificationReadiness(): Promise<NotificationReadiness>
     status: permission.status,
     canUsePushToken: true,
     expoPushToken: token.data,
-    note: 'Push-token registration is ready for an enterprise notification service.',
+    note: 'Push-token registration is ready for a notification service.',
   };
 }
 
@@ -118,7 +118,7 @@ export async function scheduleLocalNotification() {
 
   return Notifications.scheduleNotificationAsync({
     content: {
-      title: 'Enterprise Expo template',
+      title: 'Pulse Mobile',
       body: 'Local notifications are configured and ready.',
       data: { route: '/showcase/notifications' },
     },

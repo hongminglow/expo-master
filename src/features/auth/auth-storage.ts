@@ -1,7 +1,7 @@
 import type { AuthSession, KeyValueStorage, RememberedLogin } from './types';
 
-const REMEMBERED_LOGIN_KEY = 'enterprise.rememberedLogin.v1';
-const AUTH_SESSION_KEY = 'enterprise.authSession.v1';
+const REMEMBERED_LOGIN_KEY = 'pulse.rememberedLogin.v1';
+const AUTH_SESSION_KEY = 'pulse.authSession.v1';
 
 const defaultRememberedLogin: RememberedLogin = {
   email: '',

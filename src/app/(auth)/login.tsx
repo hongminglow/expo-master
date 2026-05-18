@@ -13,12 +13,10 @@ export default function LoginScreen() {
 
   return (
     <Screen contentStyle={styles.content}>
-      <AppTopBar title="Sign in" subtitle="Expo Go compatible SDK 54 workspace" />
+      <AppTopBar title="Welcome" subtitle="Secure mobile access" />
       <View style={styles.brand}>
-        <Text style={styles.brandName}>Enterprise Ready Mobile</Text>
-        <Text style={styles.brandCopy}>
-          A production-shaped Expo template with secure auth patterns and native capability demos.
-        </Text>
+        <Text style={styles.brandName}>Pulse Mobile</Text>
+        <Text style={styles.brandCopy}>Use your work account to continue.</Text>
       </View>
       <LoginForm
         initialEmail={rememberedLogin.email}

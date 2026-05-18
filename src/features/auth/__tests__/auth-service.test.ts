@@ -16,11 +16,11 @@ describe('auth service', () => {
     });
   });
 
-  it('rejects the old placeholder password', async () => {
+  it('rejects an invalid password', async () => {
     await expect(
       authenticateMockAccount({
         email: 'admin@example.com',
-        password: 'enterprise',
+        password: 'password1',
         rememberMe: true,
       }),
     ).rejects.toThrow('Invalid email or password.');

@@ -9,7 +9,7 @@ describe('LoginForm', () => {
 
     render(<LoginForm initialEmail="" initialRememberMe={false} onSubmit={submit} />);
 
-    fireEvent.press(screen.getByLabelText('Sign in'));
+    fireEvent.press(screen.getByLabelText('Continue'));
 
     expect(await screen.findByText('Enter a valid work email.')).toBeTruthy();
     expect(screen.getByText('Password must be at least 8 characters.')).toBeTruthy();
@@ -25,7 +25,7 @@ describe('LoginForm', () => {
     fireEvent.changeText(screen.getByLabelText('Password'), 'password');
     fireEvent.press(screen.getByLabelText('Remember me'));
     fireEvent.press(screen.getByLabelText('Remember me'));
-    fireEvent.press(screen.getByLabelText('Sign in'));
+    fireEvent.press(screen.getByLabelText('Continue'));
 
     await waitFor(() =>
       expect(submit).toHaveBeenCalledWith({
@@ -41,6 +41,8 @@ describe('LoginForm', () => {
 
     const passwordInput = screen.getByLabelText('Password');
     expect(passwordInput.props.secureTextEntry).toBe(true);
+    expect(screen.queryByText('Show')).toBeNull();
+    expect(screen.queryByText('Hide')).toBeNull();
 
     fireEvent.press(screen.getByLabelText('Show password'));
     expect(screen.getByLabelText('Password').props.secureTextEntry).toBe(false);
@@ -56,5 +58,13 @@ describe('LoginForm', () => {
 
     expect(screen.getByDisplayValue('admin@example.com')).toBeTruthy();
     expect(screen.getByLabelText('Remember me')).toBeTruthy();
+  });
+
+  it('keeps login copy concise without product-facing implementation labels', () => {
+    render(<LoginForm initialEmail="" initialRememberMe={false} onSubmit={jest.fn()} />);
+
+    expect(screen.getByLabelText('Continue')).toBeTruthy();
+    expect(screen.queryByText('Enterprise Expo')).toBeNull();
+    expect(screen.queryByText('Sign in')).toBeNull();
   });
 });
