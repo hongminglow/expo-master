@@ -95,6 +95,21 @@ Some native modules still behave differently in Expo Go than in a production bui
 
 Android push notifications are not available in Expo Go from SDK 53 onward. The notifications screen therefore supports local notifications in Expo Go and only attempts push-token registration in a custom development build.
 
+## Branding And Release
+
+The app identity is configured in `app.json` as Pulse Mobile. The launcher icon, adaptive icon, and splash logo all point to the generated assets in `assets/images`.
+
+Expo Go does not fully reproduce the final native splash screen on recent SDKs. Use it for day-to-day development on a phone, then verify the exact icon and splash behavior with a release build.
+
+For store releases:
+
+- `expo.version` is the user-facing app version, such as `1.0.0`.
+- `android.versionCode` and `ios.buildNumber` are the store build numbers. Each uploaded binary needs a new build number.
+- `eas.json` uses the recommended remote version source and production `autoIncrement`, so EAS Build can increment store build numbers automatically.
+- Use `eas build --profile preview --platform android` for an installable Android APK.
+- Use `eas build --profile production --platform android` for a Play Store-ready Android build.
+- Native changes such as new packages, permissions, icons, splash, app name, bundle ID, or SDK upgrades require a new build. JavaScript-only fixes can later be shipped with EAS Update after configuring `expo-updates`.
+
 ## Verification
 
 The current automated checks cover:

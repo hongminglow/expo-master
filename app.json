@@ -1,13 +1,15 @@
 {
   "expo": {
-    "name": "mobile-master",
-    "slug": "mobile-master",
+    "name": "Pulse Mobile",
+    "slug": "pulse-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "mobilemaster",
-    "userInterfaceStyle": "automatic",
+    "scheme": "pulsemobile",
+    "userInterfaceStyle": "light",
     "ios": {
+      "bundleIdentifier": "com.pulsemobile.app",
+      "buildNumber": "1",
       "icon": "./assets/images/icon.png",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow camera access to scan QR codes.",
@@ -18,6 +20,8 @@
       }
     },
     "android": {
+      "package": "com.pulsemobile.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#0D1B2A",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -74,9 +78,11 @@
           "backgroundColor": "#0D1B2A",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76,
+          "resizeMode": "contain",
           "android": {
             "image": "./assets/images/splash-icon.png",
-            "imageWidth": 76
+            "imageWidth": 76,
+            "resizeMode": "contain"
           }
         }
       ],

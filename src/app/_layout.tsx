@@ -1,13 +1,14 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import * as SystemUI from 'expo-system-ui';
 import { Stack } from 'expo-router';
-import React from 'react';
-import { useColorScheme } from 'react-native';
+import React, { useEffect } from 'react';
 
 import { AuthProvider } from '@/features/auth/auth-provider';
-import { darkPalette, palette } from '@/shared/theme/tokens';
+import { palette } from '@/shared/theme/tokens';
 
-const appLightTheme = {
+const appTheme = {
   ...DefaultTheme,
+  dark: false,
   colors: {
     ...DefaultTheme.colors,
     background: palette.cloud,
@@ -18,25 +19,19 @@ const appLightTheme = {
   },
 };
 
-const appDarkTheme = {
-  ...DarkTheme,
-  colors: {
-    ...DarkTheme.colors,
-    background: darkPalette.cloud,
-    card: darkPalette.surface,
-    text: darkPalette.ink,
-    border: darkPalette.line,
-    primary: darkPalette.primary,
-  },
-};
-
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  useEffect(() => {
+    void SystemUI.setBackgroundColorAsync(palette.cloud);
+  }, []);
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? appDarkTheme : appLightTheme}>
+    <ThemeProvider value={appTheme}>
       <AuthProvider>
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack
+          screenOptions={{
+            contentStyle: { backgroundColor: palette.cloud },
+            headerShown: false,
+          }}>
           <Stack.Screen name="index" />
           <Stack.Screen name="(auth)" />
           <Stack.Screen name="(app)" />
