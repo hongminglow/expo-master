@@ -20,6 +20,42 @@ The remember-me flow stores only the email and remember flag in AsyncStorage. Th
 - Biometrics and SecureStore examples.
 - Device, app, network, clipboard, haptics, linking, and in-app browser utilities.
 
+## Coverage Matrix
+
+This template intentionally covers the common mobile capabilities that most teams need early:
+
+| Area | Included |
+| --- | --- |
+| Authentication | Login, protected routes, session hydration, logout |
+| Local persistence | AsyncStorage remember-me data, SecureStore session/secret storage |
+| Camera and QR | QR scanner, result copy/open actions, camera permission handling |
+| Notifications | Permission readiness, Android channel setup, local notifications, push-token readiness guard |
+| Location | Foreground permission and current coordinates |
+| Media and files | Image picker, document picker, file metadata, native share sheet |
+| Security | Biometrics readiness, biometric prompt, secure secret storage |
+| Device/system | Device/app/runtime/network diagnostics |
+| Utilities | Clipboard, haptics, deep/external links, in-app browser |
+| App shell | Expo Router route groups, shared screen layout, reusable UI primitives, theme tokens |
+| Quality gates | Strict TypeScript, ESLint, Jest tests, typed feature registry |
+
+## Optional Add-ons
+
+The template is ready to kickstart common business, utility, internal, and consumer apps. It does not install every Expo SDK package by default because many are domain-specific and add permissions, binary size, or setup work.
+
+Good next add-ons when a product needs them:
+
+- `expo-updates` for over-the-air app updates in development/production build workflows.
+- `expo-sqlite` for offline-first local data.
+- `expo-localization` for multilingual apps.
+- `expo-screen-orientation` and `expo-screen-capture` for media, kiosk, or secure-screen flows.
+- `expo-calendar`, `expo-contacts`, `expo-mail-composer`, `expo-sms`, or `expo-print` for productivity apps.
+- `react-native-maps` when the app needs maps, not just coordinates.
+- `expo-audio` / `expo-video` for media-heavy products.
+- `expo-task-manager` / background tasks for background work.
+- `expo-store-review` for public consumer apps.
+
+For most teams, those should be added per product requirement instead of being forced into the base template.
+
 ## Structure
 
 - `src/app`: Expo Router route groups for auth and protected app screens.
@@ -53,7 +89,9 @@ This project targets SDK 54 so it can open in the Play Store version of Expo Go.
 3. Scan the QR code with Expo Go.
 4. If LAN cannot connect, press `s` in the Expo terminal to switch connection mode, then choose Tunnel.
 
-Some native modules still behave differently in Expo Go than in a production build, but the project is now aligned to the SDK version supported by Play Store Expo Go.
+Some native modules still behave differently in Expo Go than in a production build, but the project is aligned to the SDK version supported by Play Store Expo Go.
+
+Android push notifications are not available in Expo Go from SDK 53 onward. The notifications screen therefore supports local notifications in Expo Go and only attempts push-token registration in a custom development build.
 
 ## Verification
 
@@ -62,6 +100,6 @@ The current automated checks cover:
 - Auth storage behavior.
 - Login form validation and submit payloads.
 - Required showcase registry modules.
+- Notification runtime guards for Android Expo Go.
 - TypeScript strict compilation.
 - Expo ESLint config.
-- Expo web export.
