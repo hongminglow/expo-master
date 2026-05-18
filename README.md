@@ -12,6 +12,7 @@ The remember-me flow stores only the email and remember flag in AsyncStorage. Th
 ## Main Features
 
 - Auth flow with protected routes and session hydration.
+- Bottom tab navigation between the dashboard and profile screens.
 - Home dashboard driven by a typed Expo feature registry.
 - QR scanning with `expo-camera`.
 - Notification readiness and local notification scheduling with `expo-notifications`.
@@ -37,7 +38,7 @@ This template intentionally covers the common mobile capabilities that most team
 | Quick utilities | Clipboard copy/read, haptics, text sharing, external links, in-app browser |
 | Device/system | Device/app/runtime/network diagnostics |
 | Utilities | Clipboard, haptics, deep/external links, in-app browser |
-| App shell | Expo Router route groups, shared screen layout, reusable UI primitives, theme tokens |
+| App shell | Expo Router route groups, bottom tabs, shared screen layout, reusable UI primitives, theme tokens |
 | Quality gates | Strict TypeScript, ESLint, Jest tests, typed feature registry |
 
 ## Optional Add-ons

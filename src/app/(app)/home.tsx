@@ -1,12 +1,10 @@
-import Feather from '@expo/vector-icons/Feather';
-import { Link } from 'expo-router';
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { useAuth } from '@/features/auth/auth-provider';
 import { FeatureCard } from '@/features/showcase/components/feature-card';
 import { featureModules } from '@/features/showcase/feature-registry';
-import { palette, radius, spacing, typography } from '@/shared/theme/tokens';
+import { palette, spacing, typography } from '@/shared/theme/tokens';
 import { Card } from '@/shared/ui/card';
 import { Screen } from '@/shared/ui/screen';
 
@@ -21,11 +19,6 @@ export default function HomeScreen() {
           <Text style={styles.title}>Welcome, {user?.name ?? 'operator'}</Text>
           <Text style={styles.subtitle}>Review device capabilities from one workspace.</Text>
         </View>
-        <Link href="/settings" asChild>
-          <Pressable accessibilityLabel="Open settings" style={styles.settingsButton}>
-            <Feather name="settings" color={palette.ink} size={20} />
-          </Pressable>
-        </Link>
       </View>
 
       <View style={styles.statsGrid}>
@@ -80,16 +73,6 @@ const styles = StyleSheet.create({
     color: palette.slate,
     fontSize: typography.body,
     lineHeight: 24,
-  },
-  settingsButton: {
-    alignItems: 'center',
-    backgroundColor: palette.surface,
-    borderColor: palette.line,
-    borderRadius: radius.md,
-    borderWidth: StyleSheet.hairlineWidth,
-    height: 44,
-    justifyContent: 'center',
-    width: 44,
   },
   statsGrid: {
     flexDirection: 'row',

@@ -7,7 +7,7 @@ import { AppButton } from '@/shared/ui/app-button';
 import { Card } from '@/shared/ui/card';
 import { Screen } from '@/shared/ui/screen';
 
-export default function SettingsScreen() {
+export default function ProfileScreen() {
   const { logout, user } = useAuth();
 
   return (
