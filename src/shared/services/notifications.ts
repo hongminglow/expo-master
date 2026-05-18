@@ -1,10 +1,12 @@
+import { isRunningInExpoGo } from 'expo';
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
+import { getPermissionsAsync, requestPermissionsAsync } from 'expo-notifications/build/NotificationPermissions';
+import { setNotificationHandler } from 'expo-notifications/build/NotificationsHandler';
+import scheduleNotificationAsync from 'expo-notifications/build/scheduleNotificationAsync';
 import { Platform } from 'react-native';
 
 let notificationHandlerConfigured = false;
-
-type NotificationsModule = typeof import('expo-notifications');
 
 export type NotificationReadiness = {
   status: string;
@@ -29,21 +31,12 @@ function getProjectId() {
   );
 }
 
-async function isRunningInExpoGoRuntime() {
-  try {
-    const Expo = await import('expo');
-    return Expo.isRunningInExpoGo();
-  } catch {
-    return false;
-  }
-}
-
-async function getNotificationRuntime(): Promise<NotificationRuntime> {
+function getNotificationRuntime(): NotificationRuntime {
   return {
     appOwnership: Constants.appOwnership,
     expoGoConfig: Constants.expoGoConfig,
     expoVersion: Constants.expoVersion,
-    isExpoGo: await isRunningInExpoGoRuntime(),
+    isExpoGo: isRunningInExpoGo(),
     platform: Platform.OS,
   };
 }
@@ -61,34 +54,34 @@ export function isPushTokenUnsupportedRuntime(runtime: NotificationRuntime) {
   );
 }
 
-async function loadNotifications() {
-  return import('expo-notifications');
-}
-
-async function ensureAndroidNotificationChannel(Notifications: NotificationsModule) {
+async function ensureAndroidNotificationChannel() {
   if (Platform.OS !== 'android') {
     return;
   }
 
-  await Notifications.setNotificationChannelAsync('default', {
+  const [{ default: setNotificationChannelAsync }, { AndroidImportance }] = await Promise.all([
+    import('expo-notifications/build/setNotificationChannelAsync.android'),
+    import('expo-notifications/build/NotificationChannelManager.types'),
+  ]);
+
+  await setNotificationChannelAsync('default', {
     name: 'default',
-    importance: Notifications.AndroidImportance.DEFAULT,
+    importance: AndroidImportance.DEFAULT,
   });
 }
 
-async function requestNotificationPermission(Notifications: NotificationsModule) {
-  const existing = await Notifications.getPermissionsAsync();
-  return existing.status === 'granted' ? existing : Notifications.requestPermissionsAsync();
+async function requestNotificationPermission() {
+  const existing = await getPermissionsAsync();
+  return existing.status === 'granted' ? existing : requestPermissionsAsync();
 }
 
-export async function configureNotificationHandler(Notifications?: NotificationsModule) {
+export async function configureNotificationHandler() {
   if (notificationHandlerConfigured) {
     return true;
   }
 
   try {
-    const NotificationApi = Notifications ?? (await loadNotifications());
-    NotificationApi.setNotificationHandler({
+    setNotificationHandler({
       handleNotification: async () => ({
         shouldPlaySound: false,
         shouldSetBadge: false,
@@ -113,7 +106,7 @@ export async function getNotificationReadiness(): Promise<NotificationReadiness>
     };
   }
 
-  const runtime = await getNotificationRuntime();
+  const runtime = getNotificationRuntime();
   if (isPushTokenUnsupportedRuntime(runtime)) {
     return {
       status: 'local-only',
@@ -122,10 +115,9 @@ export async function getNotificationReadiness(): Promise<NotificationReadiness>
     };
   }
 
-  const Notifications = await loadNotifications();
-  await configureNotificationHandler(Notifications);
-  await ensureAndroidNotificationChannel(Notifications);
-  const permission = await requestNotificationPermission(Notifications);
+  await configureNotificationHandler();
+  await ensureAndroidNotificationChannel();
+  const permission = await requestNotificationPermission();
 
   if (permission.status !== 'granted') {
     return {
@@ -152,7 +144,10 @@ export async function getNotificationReadiness(): Promise<NotificationReadiness>
     };
   }
 
-  const token = await Notifications.getExpoPushTokenAsync({ projectId });
+  const { default: getExpoPushTokenAsync } = await import(
+    'expo-notifications/build/getExpoPushTokenAsync'
+  );
+  const token = await getExpoPushTokenAsync({ projectId });
 
   return {
     status: permission.status,
@@ -163,16 +158,15 @@ export async function getNotificationReadiness(): Promise<NotificationReadiness>
 }
 
 export async function scheduleLocalNotification() {
-  const Notifications = await loadNotifications();
-  await configureNotificationHandler(Notifications);
-  await ensureAndroidNotificationChannel(Notifications);
-  const permission = await requestNotificationPermission(Notifications);
+  await configureNotificationHandler();
+  await ensureAndroidNotificationChannel();
+  const permission = await requestNotificationPermission();
 
   if (permission.status !== 'granted') {
     throw new Error('Notification permission was not granted.');
   }
 
-  return Notifications.scheduleNotificationAsync({
+  return scheduleNotificationAsync({
     content: {
       title: 'Pulse Mobile',
       body: 'Local notifications are configured and ready.',
