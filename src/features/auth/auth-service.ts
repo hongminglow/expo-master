@@ -2,7 +2,7 @@ import type { AuthSession, LoginCredentials } from './types';
 
 export const DEMO_ACCOUNT = {
   email: 'admin@example.com',
-  password: 'enterprise',
+  password: 'password',
 } as const;
 
 const SESSION_DURATION_MS = 8 * 60 * 60 * 1000;

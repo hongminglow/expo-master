@@ -1,6 +1,5 @@
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
 let notificationHandlerConfigured = false;
@@ -20,20 +19,31 @@ function getProjectId() {
   );
 }
 
-export function configureNotificationHandler() {
+async function loadNotifications() {
+  return import('expo-notifications');
+}
+
+export async function configureNotificationHandler() {
   if (notificationHandlerConfigured) {
-    return;
+    return true;
   }
 
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldPlaySound: false,
-      shouldSetBadge: false,
-      shouldShowBanner: true,
-      shouldShowList: true,
-    }),
-  });
-  notificationHandlerConfigured = true;
+  try {
+    const Notifications = await loadNotifications();
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+        shouldShowBanner: true,
+        shouldShowList: true,
+      }),
+    });
+    notificationHandlerConfigured = true;
+  } catch {
+    return false;
+  }
+
+  return true;
 }
 
 export async function getNotificationReadiness(): Promise<NotificationReadiness> {
@@ -44,6 +54,9 @@ export async function getNotificationReadiness(): Promise<NotificationReadiness>
       note: 'Expo notifications require a native runtime on iOS or Android.',
     };
   }
+
+  const Notifications = await loadNotifications();
+  await configureNotificationHandler();
 
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('default', {
@@ -61,6 +74,14 @@ export async function getNotificationReadiness(): Promise<NotificationReadiness>
       status: permission.status,
       canUsePushToken: false,
       note: 'Notification permission was not granted.',
+    };
+  }
+
+  if (Platform.OS === 'android' && Constants.appOwnership === 'expo') {
+    return {
+      status: permission.status,
+      canUsePushToken: false,
+      note: 'Android Expo Go supports local notifications only on SDK 54. Push tokens require a development build.',
     };
   }
 
@@ -92,7 +113,8 @@ export async function getNotificationReadiness(): Promise<NotificationReadiness>
 }
 
 export async function scheduleLocalNotification() {
-  configureNotificationHandler();
+  const Notifications = await loadNotifications();
+  await configureNotificationHandler();
 
   return Notifications.scheduleNotificationAsync({
     content: {

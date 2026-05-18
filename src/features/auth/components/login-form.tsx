@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { AppButton } from '@/shared/ui/app-button';
 import { Card } from '@/shared/ui/card';
@@ -40,6 +40,8 @@ export function LoginForm({ initialEmail, initialRememberMe, onSubmit }: LoginFo
   const [rememberMe, setRememberMe] = useState(initialRememberMe);
   const [errors, setErrors] = useState<LoginErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const passwordInputRef = useRef<TextInput>(null);
 
   useEffect(() => {
     setEmail(initialEmail);
@@ -75,7 +77,7 @@ export function LoginForm({ initialEmail, initialRememberMe, onSubmit }: LoginFo
       <View style={styles.header}>
         <Text style={styles.eyebrow}>Enterprise Expo</Text>
         <Text style={styles.title}>Sign in</Text>
-        <Text style={styles.subtitle}>Use admin@example.com and password enterprise.</Text>
+        <Text style={styles.subtitle}>Use admin@example.com and password password.</Text>
       </View>
 
       <TextField
@@ -85,17 +87,35 @@ export function LoginForm({ initialEmail, initialRememberMe, onSubmit }: LoginFo
         keyboardType="email-address"
         textContentType="username"
         autoComplete="email"
+        returnKeyType="next"
+        onSubmitEditing={() => passwordInputRef.current?.focus()}
         error={errors.email}
       />
 
       <TextField
+        ref={passwordInputRef}
         label="Password"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
+        secureTextEntry={!isPasswordVisible}
         textContentType="password"
         autoComplete="password"
+        returnKeyType="go"
+        onSubmitEditing={handleSubmit}
         error={errors.password}
+        rightAccessory={
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={isPasswordVisible ? 'Hide password' : 'Show password'}
+            accessibilityHint="Toggles whether the password is visible."
+            hitSlop={8}
+            onPress={() => setIsPasswordVisible((current) => !current)}
+            style={({ pressed }) => [styles.passwordToggle, pressed && styles.pressed]}>
+            <Text style={styles.passwordToggleText}>
+              {isPasswordVisible ? 'Hide' : 'Show'}
+            </Text>
+          </Pressable>
+        }
       />
 
       <Pressable
@@ -170,5 +190,19 @@ const styles = StyleSheet.create({
   formError: {
     color: palette.danger,
     fontSize: typography.small,
+  },
+  passwordToggle: {
+    minHeight: 36,
+    minWidth: 52,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  passwordToggleText: {
+    color: palette.primary,
+    fontSize: typography.small,
+    fontWeight: '800',
+  },
+  pressed: {
+    opacity: 0.7,
   },
 });

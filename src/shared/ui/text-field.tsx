@@ -6,23 +6,31 @@ import { palette, radius, spacing, typography } from '@/shared/theme/tokens';
 type TextFieldProps = TextInputProps & {
   label: string;
   error?: string;
+  rightAccessory?: React.ReactNode;
 };
 
-export function TextField({ label, error, style, ...props }: TextFieldProps) {
+export const TextField = React.forwardRef<TextInput, TextFieldProps>(function TextField(
+  { label, error, rightAccessory, style, ...props },
+  ref,
+) {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
-      <TextInput
-        accessibilityLabel={label}
-        autoCapitalize="none"
-        placeholderTextColor={palette.slate}
-        style={[styles.input, Boolean(error) && styles.inputError, style]}
-        {...props}
-      />
+      <View style={[styles.inputFrame, Boolean(error) && styles.inputError]}>
+        <TextInput
+          ref={ref}
+          accessibilityLabel={label}
+          autoCapitalize="none"
+          placeholderTextColor={palette.slate}
+          style={[styles.input, style]}
+          {...props}
+        />
+        {rightAccessory ? <View style={styles.accessory}>{rightAccessory}</View> : null}
+      </View>
       {error ? <Text style={styles.error}>{error}</Text> : null}
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -33,18 +41,27 @@ const styles = StyleSheet.create({
     fontSize: typography.small,
     fontWeight: '700',
   },
-  input: {
-    minHeight: 48,
+  inputFrame: {
+    alignItems: 'center',
+    backgroundColor: palette.surface,
     borderColor: palette.line,
     borderRadius: radius.md,
     borderWidth: 1,
+    flexDirection: 'row',
+    minHeight: 48,
+  },
+  input: {
+    flex: 1,
+    minHeight: 48,
     color: palette.ink,
     fontSize: typography.body,
     paddingHorizontal: spacing.md,
-    backgroundColor: palette.surface,
   },
   inputError: {
     borderColor: palette.danger,
+  },
+  accessory: {
+    paddingRight: spacing.sm,
   },
   error: {
     color: palette.danger,

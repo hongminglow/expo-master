@@ -22,7 +22,7 @@ describe('LoginForm', () => {
     render(<LoginForm initialEmail="admin@example.com" initialRememberMe={true} onSubmit={submit} />);
 
     fireEvent.changeText(screen.getByLabelText('Email'), 'ops@example.com');
-    fireEvent.changeText(screen.getByLabelText('Password'), 'enterprise');
+    fireEvent.changeText(screen.getByLabelText('Password'), 'password');
     fireEvent.press(screen.getByLabelText('Remember me'));
     fireEvent.press(screen.getByLabelText('Remember me'));
     fireEvent.press(screen.getByLabelText('Sign in'));
@@ -30,10 +30,23 @@ describe('LoginForm', () => {
     await waitFor(() =>
       expect(submit).toHaveBeenCalledWith({
         email: 'ops@example.com',
-        password: 'enterprise',
+        password: 'password',
         rememberMe: true,
       }),
     );
+  });
+
+  it('lets users show and hide the password value', () => {
+    render(<LoginForm initialEmail="admin@example.com" initialRememberMe={false} onSubmit={jest.fn()} />);
+
+    const passwordInput = screen.getByLabelText('Password');
+    expect(passwordInput.props.secureTextEntry).toBe(true);
+
+    fireEvent.press(screen.getByLabelText('Show password'));
+    expect(screen.getByLabelText('Password').props.secureTextEntry).toBe(false);
+
+    fireEvent.press(screen.getByLabelText('Hide password'));
+    expect(screen.getByLabelText('Password').props.secureTextEntry).toBe(true);
   });
 
   it('preloads remembered email and remember-me state', () => {

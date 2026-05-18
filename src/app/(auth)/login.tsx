@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { LoginForm } from '@/features/auth/components/login-form';
 import { useAuth } from '@/features/auth/auth-provider';
 import { palette, spacing, typography } from '@/shared/theme/tokens';
+import { AppTopBar } from '@/shared/ui/app-top-bar';
 import { Screen } from '@/shared/ui/screen';
 
 export default function LoginScreen() {
@@ -12,6 +13,7 @@ export default function LoginScreen() {
 
   return (
     <Screen contentStyle={styles.content}>
+      <AppTopBar title="Sign in" subtitle="Expo Go compatible SDK 54 workspace" />
       <View style={styles.brand}>
         <Text style={styles.brandName}>Enterprise Ready Mobile</Text>
         <Text style={styles.brandCopy}>

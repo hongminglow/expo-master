@@ -5,7 +5,7 @@ An Expo SDK 54 TypeScript starter for enterprise mobile apps. It uses Expo Route
 ## Demo Account
 
 - Email: `admin@example.com`
-- Password: `enterprise`
+- Password: `password`
 
 The remember-me flow stores only the email and remember flag in AsyncStorage. The demo session is persisted in SecureStore only when remember-me is enabled.
 
