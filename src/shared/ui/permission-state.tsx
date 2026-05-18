@@ -10,7 +10,7 @@ type PermissionStateProps = {
   title: string;
   message: string;
   actionLabel?: string;
-  onAction?: () => void;
+  onAction?: () => void | Promise<void>;
 };
 
 export function PermissionState({ title, message, actionLabel, onAction }: PermissionStateProps) {

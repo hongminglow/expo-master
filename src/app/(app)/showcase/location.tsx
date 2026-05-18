@@ -40,6 +40,7 @@ export default function LocationScreen() {
           <InfoRow label="Latitude" value={location.latitude.toFixed(6)} />
           <InfoRow label="Longitude" value={location.longitude.toFixed(6)} />
           <InfoRow label="Accuracy" value={location.accuracy ? `${Math.round(location.accuracy)} m` : 'Unknown'} />
+          <InfoRow label="Source" value={location.source === 'current' ? 'Current fix' : 'Last known fallback'} />
           <InfoRow label="Timestamp" value={new Date(location.timestamp).toLocaleString()} />
         </Card>
       ) : null}

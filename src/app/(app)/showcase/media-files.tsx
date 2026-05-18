@@ -69,6 +69,9 @@ export default function MediaFilesScreen() {
       {asset ? (
         <Card style={styles.card}>
           <InfoRow label="Source" value={asset.source} />
+          {asset.source === 'image' ? (
+            <InfoRow label="Photo access" value={asset.accessPrivileges ?? 'Unknown'} />
+          ) : null}
           <InfoRow label="Name" value={asset.name} />
           <InfoRow label="MIME type" value={asset.mimeType ?? 'Unknown'} />
           <InfoRow label="Size" value={formatBytes(asset.size)} />

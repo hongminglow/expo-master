@@ -7,6 +7,7 @@ export type FeatureModuleId =
   | 'media-files'
   | 'security'
   | 'utilities'
+  | 'platform-readiness'
   | 'device-system';
 
 export type FeatureModule = {
@@ -72,6 +73,15 @@ export const featureModules: FeatureModule[] = [
     route: '/showcase/utilities',
     icon: 'zap',
     permissions: ['Clipboard', 'Haptics', 'Sharing', 'External links'],
+    platforms: ['ios', 'android', 'web'],
+  },
+  {
+    id: 'platform-readiness',
+    title: 'Platform Readiness',
+    description: 'Review Android and iOS differences, fallbacks, and runtime guardrails.',
+    route: '/showcase/platform-readiness',
+    icon: 'shield',
+    permissions: ['Safe areas', 'Permissions', 'Native fallbacks'],
     platforms: ['ios', 'android', 'web'],
   },
   {

@@ -6,9 +6,12 @@ const DEMO_SECRET_KEY = 'pulse.demoSecret.v1';
 const webSecureFallback = new Map<string, string>();
 
 export type BiometricReadiness = {
+  canUseBiometricStorage: boolean;
   hasHardware: boolean;
   isEnrolled: boolean;
+  secureStoreAvailable: boolean;
   supportedTypes: string[];
+  warning?: string;
 };
 
 function describeAuthType(type: LocalAuthentication.AuthenticationType) {
@@ -27,22 +30,32 @@ function describeAuthType(type: LocalAuthentication.AuthenticationType) {
 export async function getBiometricReadiness(): Promise<BiometricReadiness> {
   if (Platform.OS === 'web') {
     return {
+      canUseBiometricStorage: false,
       hasHardware: false,
       isEnrolled: false,
+      secureStoreAvailable: false,
       supportedTypes: ['Web fallback'],
+      warning: 'Biometric prompts and native secure storage require iOS or Android.',
     };
   }
 
-  const [hasHardware, isEnrolled, supported] = await Promise.all([
+  const [hasHardware, isEnrolled, supported, secureStoreAvailable] = await Promise.all([
     LocalAuthentication.hasHardwareAsync(),
     LocalAuthentication.isEnrolledAsync(),
     LocalAuthentication.supportedAuthenticationTypesAsync(),
+    SecureStore.isAvailableAsync(),
   ]);
 
   return {
+    canUseBiometricStorage: SecureStore.canUseBiometricAuthentication(),
     hasHardware,
     isEnrolled,
+    secureStoreAvailable,
     supportedTypes: supported.map(describeAuthType),
+    warning:
+      hasHardware && !isEnrolled
+        ? 'Biometric hardware is present, but the user has not enrolled a biometric method.'
+        : undefined,
   };
 }
 
@@ -66,7 +79,13 @@ export async function saveDemoSecret(value: string) {
     return;
   }
 
-  await SecureStore.setItemAsync(DEMO_SECRET_KEY, value);
+  if (!(await SecureStore.isAvailableAsync())) {
+    throw new Error('Secure storage is not available on this device.');
+  }
+
+  await SecureStore.setItemAsync(DEMO_SECRET_KEY, value, {
+    keychainAccessible: SecureStore.WHEN_UNLOCKED_THIS_DEVICE_ONLY,
+  });
 }
 
 export async function readDemoSecret() {
@@ -74,5 +93,11 @@ export async function readDemoSecret() {
     return webSecureFallback.get(DEMO_SECRET_KEY) ?? null;
   }
 
-  return SecureStore.getItemAsync(DEMO_SECRET_KEY);
+  if (!(await SecureStore.isAvailableAsync())) {
+    throw new Error('Secure storage is not available on this device.');
+  }
+
+  return SecureStore.getItemAsync(DEMO_SECRET_KEY, {
+    keychainAccessible: SecureStore.WHEN_UNLOCKED_THIS_DEVICE_ONLY,
+  });
 }

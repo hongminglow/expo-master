@@ -1,8 +1,9 @@
+import { useIsFocused } from '@react-navigation/native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 
-import { copyToClipboard, openExternalUrl } from '@/shared/services/system-actions';
+import { copyToClipboard, openAppSettings, openExternalUrl } from '@/shared/services/system-actions';
 import { palette, radius, spacing, typography } from '@/shared/theme/tokens';
 import { AppButton } from '@/shared/ui/app-button';
 import { Card } from '@/shared/ui/card';
@@ -10,9 +11,31 @@ import { PermissionState } from '@/shared/ui/permission-state';
 import { Screen } from '@/shared/ui/screen';
 
 export default function QrScannerScreen() {
+  const isFocused = useIsFocused();
   const [permission, requestPermission] = useCameraPermissions();
+  const [cameraAvailable, setCameraAvailable] = useState<boolean | null>(null);
   const [result, setResult] = useState<string>('');
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    void CameraView.isAvailableAsync()
+      .then((isAvailable) => {
+        if (isMounted) {
+          setCameraAvailable(isAvailable);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setCameraAvailable(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   async function copyResult() {
     await copyToClipboard(result);
@@ -46,14 +69,31 @@ export default function QrScannerScreen() {
     );
   }
 
+  if (cameraAvailable === false) {
+    return (
+      <Screen>
+        <PermissionState
+          title="Camera unavailable"
+          message="No compatible camera is available. Try a physical device or check simulator camera support."
+        />
+      </Screen>
+    );
+  }
+
   if (!permission.granted) {
+    const canAskAgain = permission.canAskAgain !== false;
+
     return (
       <Screen>
         <PermissionState
           title="Camera permission required"
-          message="The QR scanner needs camera access to scan badge, kiosk, or device QR codes."
-          actionLabel="Allow camera"
-          onAction={requestPermission}
+          message={
+            canAskAgain
+              ? 'The QR scanner needs camera access to scan badge, kiosk, or device QR codes.'
+              : 'Camera access is blocked. Open app settings to allow camera access.'
+          }
+          actionLabel={canAskAgain ? 'Allow camera' : 'Open settings'}
+          onAction={canAskAgain ? async () => void (await requestPermission()) : openAppSettings}
         />
       </Screen>
     );
@@ -65,12 +105,18 @@ export default function QrScannerScreen() {
         <Text style={styles.title}>Scan a QR code</Text>
         <Text style={styles.copy}>The scanner pauses after the first QR result to avoid duplicate events.</Text>
         <View style={styles.cameraFrame}>
-          <CameraView
-            style={StyleSheet.absoluteFill}
-            facing="back"
-            barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
-            onBarcodeScanned={result ? undefined : ({ data }) => setResult(data)}
-          />
+          {isFocused ? (
+            <CameraView
+              style={StyleSheet.absoluteFill}
+              facing="back"
+              barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
+              onBarcodeScanned={result ? undefined : ({ data }) => setResult(data)}
+            />
+          ) : (
+            <View style={styles.cameraPaused}>
+              <Text style={styles.copy}>Camera paused while this screen is inactive.</Text>
+            </View>
+          )}
         </View>
       </Card>
 
@@ -109,6 +155,13 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: radius.md,
     overflow: 'hidden',
+  },
+  cameraPaused: {
+    alignItems: 'center',
+    backgroundColor: palette.line,
+    flex: 1,
+    justifyContent: 'center',
+    padding: spacing.md,
   },
   label: {
     color: palette.primary,

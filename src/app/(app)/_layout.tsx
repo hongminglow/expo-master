@@ -62,6 +62,10 @@ export default function AppLayout() {
       <Tabs.Screen name="showcase/media-files" options={{ href: null, title: 'Media & Files' }} />
       <Tabs.Screen name="showcase/security" options={{ href: null, title: 'Security' }} />
       <Tabs.Screen name="showcase/utilities" options={{ href: null, title: 'Quick Utilities' }} />
+      <Tabs.Screen
+        name="showcase/platform-readiness"
+        options={{ href: null, title: 'Platform Readiness' }}
+      />
       <Tabs.Screen name="showcase/device-system" options={{ href: null, title: 'Device & System' }} />
     </Tabs>
   );

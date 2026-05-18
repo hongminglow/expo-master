@@ -9,6 +9,7 @@ describe('feature registry', () => {
       'media-files',
       'security',
       'utilities',
+      'platform-readiness',
       'device-system',
     ]);
   });

@@ -2,10 +2,14 @@ import * as Clipboard from 'expo-clipboard';
 import * as Haptics from 'expo-haptics';
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
-import { Share } from 'react-native';
+import { Platform, Share } from 'react-native';
 
 export async function copyToClipboard(value: string) {
-  await Clipboard.setStringAsync(value);
+  const didCopy = await Clipboard.setStringAsync(value);
+
+  if (!didCopy) {
+    throw new Error('Clipboard write was not completed on this platform.');
+  }
 }
 
 export async function readClipboard() {
@@ -13,16 +17,33 @@ export async function readClipboard() {
 }
 
 export async function triggerSuccessHaptic() {
-  await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  if (Platform.OS === 'web') {
+    return;
+  }
+
+  try {
+    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  } catch {
+    // Haptics can be a no-op on devices with disabled vibration or iOS low power conditions.
+  }
 }
 
 export async function triggerSelectionHaptic() {
-  await Haptics.selectionAsync();
+  if (Platform.OS === 'web') {
+    return;
+  }
+
+  try {
+    await Haptics.selectionAsync();
+  } catch {
+    // Haptics are best-effort feedback and should never block the main action.
+  }
 }
 
 export async function openExternalUrl(url: string) {
   const canOpen = await Linking.canOpenURL(url);
-  if (!canOpen) {
+
+  if (!canOpen && !/^https?:\/\//i.test(url)) {
     throw new Error(`Cannot open ${url}`);
   }
 
@@ -30,7 +51,19 @@ export async function openExternalUrl(url: string) {
 }
 
 export async function openInAppBrowser(url: string) {
-  await WebBrowser.openBrowserAsync(url);
+  try {
+    await WebBrowser.openBrowserAsync(url);
+  } catch {
+    await openExternalUrl(url);
+  }
+}
+
+export async function openAppSettings() {
+  try {
+    await Linking.openSettings();
+  } catch {
+    throw new Error('Open this app in system settings to update permissions.');
+  }
 }
 
 export async function shareText(message: string) {

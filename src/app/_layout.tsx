@@ -1,4 +1,5 @@
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
 import { Stack } from 'expo-router';
 import React, { useEffect } from 'react';
@@ -27,6 +28,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={appTheme}>
       <AuthProvider>
+        <StatusBar backgroundColor={palette.cloud} style="dark" translucent={false} />
         <Stack
           screenOptions={{
             contentStyle: { backgroundColor: palette.cloud },

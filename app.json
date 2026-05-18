@@ -7,9 +7,17 @@
     "icon": "./assets/images/icon.png",
     "scheme": "pulsemobile",
     "userInterfaceStyle": "light",
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#0D1B2A",
+      "translucent": false
+    },
     "ios": {
       "bundleIdentifier": "com.pulsemobile.app",
       "buildNumber": "1",
+      "config": {
+        "usesNonExemptEncryption": false
+      },
       "icon": "./assets/images/icon.png",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow camera access to scan QR codes.",
@@ -66,11 +74,18 @@
       [
         "expo-notifications",
         {
-          "color": "#0B6E4F"
+          "color": "#0B6E4F",
+          "defaultChannel": "default"
         }
       ],
       "expo-document-picker",
-      "expo-secure-store",
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+          "faceIDPermission": "Allow Pulse Mobile to use Face ID for protected actions."
+        }
+      ],
       "expo-sharing",
       [
         "expo-splash-screen",

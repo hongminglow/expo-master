@@ -20,6 +20,7 @@ The remember-me flow stores only the email and remember flag in AsyncStorage. Th
 - Image/document picking, file metadata, and sharing.
 - Biometrics and SecureStore examples.
 - Quick utilities for clipboard, haptics, text sharing, links, and in-app browser handoff.
+- Platform readiness checks for Android/iOS safe areas, keyboard behavior, permissions, native fallbacks, and build-time config.
 - Device, app, network, clipboard, haptics, linking, and in-app browser utilities.
 
 ## Coverage Matrix
@@ -36,6 +37,7 @@ This template intentionally covers the common mobile capabilities that most team
 | Media and files | Image picker, document picker, file metadata, native share sheet |
 | Security | Biometrics readiness, biometric prompt, secure secret storage |
 | Quick utilities | Clipboard copy/read, haptics, text sharing, external links, in-app browser |
+| Platform readiness | Android/iOS safe-area, keyboard, permissions, notifications, location, camera, picker, sharing, storage, haptics, and linking fallbacks |
 | Device/system | Device/app/runtime/network diagnostics |
 | Utilities | Clipboard, haptics, deep/external links, in-app browser |
 | App shell | Expo Router route groups, bottom tabs, shared screen layout, reusable UI primitives, theme tokens |
@@ -119,5 +121,6 @@ The current automated checks cover:
 - Login form validation and submit payloads.
 - Required showcase registry modules.
 - Notification runtime guards for Android Expo Go.
+- Platform readiness matrix for common Android/iOS fallback coverage.
 - TypeScript strict compilation.
 - Expo ESLint config.

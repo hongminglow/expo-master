@@ -7,7 +7,7 @@ type AppButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
 type AppButtonProps = {
   title: string;
-  onPress?: () => void;
+  onPress?: () => void | Promise<void>;
   variant?: AppButtonVariant;
   disabled?: boolean;
   loading?: boolean;

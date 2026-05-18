@@ -24,17 +24,30 @@ export default function SecurityScreen() {
   }, []);
 
   async function verify() {
-    const result = await authenticateWithBiometrics();
-    setMessage(result.success ? 'Biometric verification succeeded.' : 'Verification was not completed.');
+    try {
+      const result = await authenticateWithBiometrics();
+      setMessage(result.success ? 'Biometric verification succeeded.' : 'Verification was not completed.');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Biometric verification failed.');
+    }
   }
 
   async function saveSecret() {
-    await saveDemoSecret('secure-demo-value');
-    setMessage('Demo secret saved.');
+    try {
+      await saveDemoSecret('secure-demo-value');
+      setMessage('Demo secret saved.');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Unable to save secret.');
+    }
   }
 
   async function loadSecret() {
-    setSecret(await readDemoSecret());
+    try {
+      setSecret(await readDemoSecret());
+      setMessage('Demo secret loaded.');
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Unable to read secret.');
+    }
   }
 
   return (
@@ -49,7 +62,13 @@ export default function SecurityScreen() {
           <View style={styles.details}>
             <InfoRow label="Hardware available" value={readiness.hasHardware ? 'Yes' : 'No'} />
             <InfoRow label="Biometric enrolled" value={readiness.isEnrolled ? 'Yes' : 'No'} />
+            <InfoRow label="Secure storage" value={readiness.secureStoreAvailable ? 'Available' : 'Unavailable'} />
+            <InfoRow
+              label="Biometric storage"
+              value={readiness.canUseBiometricStorage ? 'Supported' : 'Not supported'}
+            />
             <InfoRow label="Supported types" value={readiness.supportedTypes.join(', ') || 'None'} />
+            {readiness.warning ? <InfoRow label="Fallback note" value={readiness.warning} /> : null}
           </View>
         ) : null}
         <View style={styles.actions}>
