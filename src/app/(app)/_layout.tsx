@@ -34,6 +34,7 @@ export default function AppLayout() {
       <Stack.Screen name="showcase/location" options={{ title: 'Location' }} />
       <Stack.Screen name="showcase/media-files" options={{ title: 'Media & Files' }} />
       <Stack.Screen name="showcase/security" options={{ title: 'Security' }} />
+      <Stack.Screen name="showcase/utilities" options={{ title: 'Quick Utilities' }} />
       <Stack.Screen name="showcase/device-system" options={{ title: 'Device & System' }} />
     </Stack>
   );

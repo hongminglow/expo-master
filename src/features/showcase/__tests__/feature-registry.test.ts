@@ -8,6 +8,7 @@ describe('feature registry', () => {
       'location',
       'media-files',
       'security',
+      'utilities',
       'device-system',
     ]);
   });

@@ -18,6 +18,7 @@ The remember-me flow stores only the email and remember flag in AsyncStorage. Th
 - Foreground location with `expo-location`.
 - Image/document picking, file metadata, and sharing.
 - Biometrics and SecureStore examples.
+- Quick utilities for clipboard, haptics, text sharing, links, and in-app browser handoff.
 - Device, app, network, clipboard, haptics, linking, and in-app browser utilities.
 
 ## Coverage Matrix
@@ -33,6 +34,7 @@ This template intentionally covers the common mobile capabilities that most team
 | Location | Foreground permission and current coordinates |
 | Media and files | Image picker, document picker, file metadata, native share sheet |
 | Security | Biometrics readiness, biometric prompt, secure secret storage |
+| Quick utilities | Clipboard copy/read, haptics, text sharing, external links, in-app browser |
 | Device/system | Device/app/runtime/network diagnostics |
 | Utilities | Clipboard, haptics, deep/external links, in-app browser |
 | App shell | Expo Router route groups, shared screen layout, reusable UI primitives, theme tokens |

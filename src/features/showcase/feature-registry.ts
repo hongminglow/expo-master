@@ -6,6 +6,7 @@ export type FeatureModuleId =
   | 'location'
   | 'media-files'
   | 'security'
+  | 'utilities'
   | 'device-system';
 
 export type FeatureModule = {
@@ -62,6 +63,15 @@ export const featureModules: FeatureModule[] = [
     route: '/showcase/security',
     icon: 'lock',
     permissions: ['Biometrics', 'Secure storage'],
+    platforms: ['ios', 'android', 'web'],
+  },
+  {
+    id: 'utilities',
+    title: 'Quick Utilities',
+    description: 'Use clipboard, haptics, sharing, external links, and in-app browser actions.',
+    route: '/showcase/utilities',
+    icon: 'zap',
+    permissions: ['Clipboard', 'Haptics', 'Sharing', 'External links'],
     platforms: ['ios', 'android', 'web'],
   },
   {
