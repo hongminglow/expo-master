@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 
 import { copyToClipboard, openAppSettings, openExternalUrl } from '@/shared/services/system-actions';
@@ -13,29 +13,9 @@ import { Screen } from '@/shared/ui/screen';
 export default function QrScannerScreen() {
   const isFocused = useIsFocused();
   const [permission, requestPermission] = useCameraPermissions();
-  const [cameraAvailable, setCameraAvailable] = useState<boolean | null>(null);
+  const [cameraError, setCameraError] = useState('');
   const [result, setResult] = useState<string>('');
   const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    let isMounted = true;
-
-    void CameraView.isAvailableAsync()
-      .then((isAvailable) => {
-        if (isMounted) {
-          setCameraAvailable(isAvailable);
-        }
-      })
-      .catch(() => {
-        if (isMounted) {
-          setCameraAvailable(false);
-        }
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   async function copyResult() {
     await copyToClipboard(result);
@@ -65,17 +45,6 @@ export default function QrScannerScreen() {
     return (
       <Screen>
         <PermissionState title="Checking camera access" message="Preparing camera permission state." />
-      </Screen>
-    );
-  }
-
-  if (cameraAvailable === false) {
-    return (
-      <Screen>
-        <PermissionState
-          title="Camera unavailable"
-          message="No compatible camera is available. Try a physical device or check simulator camera support."
-        />
       </Screen>
     );
   }
@@ -110,7 +79,9 @@ export default function QrScannerScreen() {
               style={StyleSheet.absoluteFill}
               facing="back"
               barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
+              onCameraReady={() => setCameraError('')}
               onBarcodeScanned={result ? undefined : ({ data }) => setResult(data)}
+              onMountError={({ message }) => setCameraError(message)}
             />
           ) : (
             <View style={styles.cameraPaused}>
@@ -119,6 +90,13 @@ export default function QrScannerScreen() {
           )}
         </View>
       </Card>
+
+      {cameraError ? (
+        <PermissionState
+          title="Camera preview unavailable"
+          message={`${cameraError} Try closing other camera apps, then leave and reopen this screen.`}
+        />
+      ) : null}
 
       {result ? (
         <Card style={styles.card}>
